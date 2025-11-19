@@ -1,25 +1,24 @@
 import React from "react";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+
+import banner1 from "../../assets/banner/banner1.png";
+import banner2 from "../../assets/banner/banner2.png";
+import banner3 from "../../assets/banner/banner3.png";
 
 const Banner = () => {
   return (
-    <section>
+    <Carousel autoPlay={true} infiniteLoop={true}>
       <div>
-        <div>
-          <figure>
-            <img src="../../assets/tiny-deliveryman.png" alt="img" />
-          </figure>
-        </div>
-        <div>
-          <h1>We Make Sure Your Parcel Arrives On Time – No Fuss.</h1>
-          <p>
-            Enjoy fast, reliable parcel delivery with real-time tracking and
-            zero hassle. From personal packages to business shipments — we
-            deliver on time, every time.
-          </p>
-        </div>
+        <img src={banner1} />
       </div>
-      <div></div>
-    </section>
+      <div>
+        <img src={banner2} />
+      </div>
+      <div>
+        <img src={banner3} />
+      </div>
+    </Carousel>
   );
 };
 
