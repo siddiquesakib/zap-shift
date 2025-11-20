@@ -7,6 +7,8 @@ import About from "../Pages/About/About";
 import AuthLayout from "../Layouts/AuthLayout";
 import Login from "../Pages/Auth/Login";
 import Register from "../Pages/Auth/Register";
+import SendParcel from "../Pages/Home/SendParcel/SendParcel";
+import PrivetRoutes from "./PrivetRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -25,6 +27,14 @@ export const router = createBrowserRouter([
       {
         path: "/about-us",
         Component: About,
+      },
+      {
+        path: "/sendparcel",
+        element: (
+          <PrivetRoutes>
+            <SendParcel />
+          </PrivetRoutes>
+        ),
       },
     ],
   },

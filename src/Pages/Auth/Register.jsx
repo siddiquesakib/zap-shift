@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import UseAuth from "../../Hooks/UseAuth";
 import SocialLogin from "./Social/SocialLogin";
 import { Link } from "react-router";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -10,13 +11,38 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const { registerUser } = UseAuth();
+  const { registerUser, updateUserProfile } = UseAuth();
 
   const handleRegister = (data) => {
-    console.log(data);
+    console.log("after register", data.photo[0]);
+    const profileImg = data.photo[0];
+
+    // console.log(data);
     registerUser(data.email, data.Password)
       .then((result) => {
         console.log(result);
+
+        const formData = new FormData();
+        formData.append("image", profileImg);
+
+        const img_api_url = `https://api.imgbb.com/1/upload?key=${
+          import.meta.env.VITE_img_host
+        }`;
+
+        axios.post(img_api_url, formData).then((res) => {
+          console.log("after img data", res.data.data.url);
+
+          const userProfile = {
+            displayName: data.name,
+            photoURL: res.data.data.url,
+          };
+
+          updateUserProfile(userProfile)
+            .then(()=>{
+              console.log('user profile update')
+            })
+            .catch((err) => console.log(err));
+        });
       })
       .then((err) => {
         console.log(err);
@@ -31,7 +57,6 @@ const Register = () => {
       </div>
       <form onSubmit={handleSubmit(handleRegister)} className="card-body">
         <fieldset className="fieldset">
-          
           {/* name field */}
           <label className="label">Name</label>
           <input
@@ -54,7 +79,7 @@ const Register = () => {
             placeholder="Your Photo"
           />
 
-          {errors.name?.type === "required" && (
+          {errors.photo?.type === "required" && (
             <p className="text-red-500">Photo is required.</p>
           )}
 
