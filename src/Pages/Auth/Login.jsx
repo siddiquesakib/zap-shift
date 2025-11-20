@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import UseAuth from "../../Hooks/UseAuth";
 import SocialLogin from "./Social/SocialLogin";
+import { Link } from "react-router";
 
 const Login = () => {
   const {
@@ -68,9 +69,14 @@ const Login = () => {
             </p>
           )}
           <div>
-            <a className="link link-hover">Forgot password?</a>
+            <p>
+              Forgot password? New here{" "}
+              <Link className="link link-hover" to={"/register"}>
+                Register
+              </Link>{" "}
+            </p>
           </div>
-          <button className="btn btn-neutral w-fit  mt-4">Login</button>
+          <button className="btn btn-neutral w-fit  mt-4">Login here</button>
         </fieldset>
       </form>
       or
