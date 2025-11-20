@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import UseAuth from "../../Hooks/UseAuth";
+import SocialLogin from "./Social/SocialLogin";
 
 const Login = () => {
   const {
@@ -72,6 +73,8 @@ const Login = () => {
           <button className="btn btn-neutral w-fit  mt-4">Login</button>
         </fieldset>
       </form>
+      or
+      <SocialLogin></SocialLogin>
     </div>
   );
 };

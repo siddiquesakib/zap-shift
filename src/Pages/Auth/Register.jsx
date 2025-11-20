@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import UseAuth from "../../Hooks/UseAuth";
+import SocialLogin from "./Social/SocialLogin";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
@@ -48,6 +49,8 @@ const Register = () => {
           <button className="btn w-fit btn-neutral mt-4">Register</button>
         </fieldset>
       </form>
+      or
+      <SocialLogin />
     </div>
   );
 };
