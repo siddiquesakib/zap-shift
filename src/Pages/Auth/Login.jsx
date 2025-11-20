@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import UseAuth from "../../Hooks/UseAuth";
 
 const Login = () => {
   const {
@@ -8,11 +9,26 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  const { registerUser } = UseAuth();
+
   const handleLogin = (data) => {
     console.log(data);
+    registerUser(data.email, data.Password)
+      .then((result) => {
+        console.log(result);
+      })
+      .then((err) => {
+        console.log(err);
+      });
   };
   return (
-    <div>
+    <div className="max-w-5xl mx-auto">
+      <div className="mt-16 mb-6">
+        <h1 className=" font-extrabold text-3xl text-secondary">
+          Welcome Back
+        </h1>
+        <p>Login with ZapShift</p>
+      </div>
       <form onSubmit={handleSubmit(handleLogin)}>
         <fieldset className="fieldset">
           {/* email */}
@@ -53,7 +69,7 @@ const Login = () => {
           <div>
             <a className="link link-hover">Forgot password?</a>
           </div>
-          <button className="btn btn-neutral mt-4">Login</button>
+          <button className="btn btn-neutral w-fit  mt-4">Login</button>
         </fieldset>
       </form>
     </div>
