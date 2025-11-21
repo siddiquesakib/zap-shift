@@ -1,12 +1,28 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useLoaderData } from "react-router";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
+
+  const serviceCenters = useLoaderData();
+  const regionsDuplicate = serviceCenters.map((c) => c.region);
+
+  const regions = [...new Set(regionsDuplicate)];
+  const senderRegion = watch("senderRegion");
+
+  console.log(regions);
+
+  const districtByRegion = (region) => {
+    const regionDistrict = serviceCenters.filter((c) => c.region === region);
+    const districts = regionDistrict.map((d) => d.district);
+    return districts;
+  };
 
   const handleSendParcel = (data) => {
     console.log(data);
@@ -20,7 +36,6 @@ const SendParcel = () => {
 
         {/* Form Section */}
         <form onSubmit={handleSubmit(handleSendParcel)}>
-          {" "}
           <div className="border-t-2 border-gray-200 pt-8">
             <h2 className="text-xl font-bold text-teal-900 mb-6">
               Enter your parcel details
@@ -80,63 +95,59 @@ const SendParcel = () => {
 
             {/* Two Column Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              {/* Sender Details */}
               <div>
                 <h3 className="text-lg font-bold text-teal-900 mb-6">
                   Sender Details
                 </h3>
 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Sender Name
-                      </label>
-                      <input
-                        type="text"
-                        {...register("senderName")}
-                        placeholder="Sender Name"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Sender Pickup Wire house
-                      </label>
-                      <select
-                        //   {...register("senderType")}
-                        className="select select-bordered w-full"
-                      >
-                        <option value="">Select Wire house</option>
-                        <option value="dhaka">Dhaka</option>
-                        <option value="chittagong">Chittagong</option>
-                        <option value="sylhet">Sylhet</option>
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sender Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Sender Name"
+                      className="input input-bordered w-full"
+                      {...register("senderName")}
+                    />
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Address
-                      </label>
-                      <input
-                        type="text"
-                        {...register("senderAddress")}
-                        placeholder="Address"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Sender Contact No
-                      </label>
-                      <input
-                        type="text"
-                        //   {...register("senderType")}
-                        placeholder="Sender Contact No"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sender Email
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Sender Email"
+                      className="input input-bordered w-full"
+                      {...register("senderEmail")}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Address"
+                      className="input input-bordered w-full"
+                      {...register("senderAddress")}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Sender Phone No
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Sender Phone No"
+                      className="input input-bordered w-full"
+                      {...register("senderPhone")}
+                    />
                   </div>
 
                   <div>
@@ -144,28 +155,47 @@ const SendParcel = () => {
                       Your Region
                     </label>
                     <select
-                      {...register("senderRegion")}
                       className="select select-bordered w-full"
+                      defaultValue="pick your region"
+                      {...register("senderRegion")}
                     >
-                      <option value="">Select your region</option>
-                      <option value="dhaka">Dhaka</option>
-                      <option value="chittagong">Chittagong</option>
-                      <option value="sylhet">Sylhet</option>
-                      <option value="rajshahi">Rajshahi</option>
+                      {regions.map((r, i) => (
+                        <option key={i} value={r}>
+                          {r}{" "}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
+                  {/* District */}
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Your District
+                    </label>
+                    <select
+                      className="select select-bordered w-full"
+                      defaultValue="Pick your District"
+                      {...register("senderDistrict")}
+                    >
+                      {districtByRegion(senderRegion).map((r, i) => (
+                        <option key={i} value={r}>
+                          {r}{" "}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Pickup Instruction
                     </label>
                     <textarea
-                      name="pickupInstruction"
                       placeholder="Pickup Instruction"
                       rows="4"
                       className="textarea textarea-bordered w-full"
+                      {...register("pickupInstruction")}
                     ></textarea>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
@@ -176,96 +206,95 @@ const SendParcel = () => {
                 </h3>
 
                 <div className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Receiver Name
-                      </label>
-                      <input
-                        type="text"
-                        name="receiverName"
-                        placeholder="Sender Name"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Receiver Delivery Wire house
-                      </label>
-                      <select
-                        name="receiverWarehouse"
-                        className="select select-bordered w-full"
-                      >
-                        <option value="">Select Wire house</option>
-                        <option value="dhaka">Dhaka</option>
-                        <option value="chittagong">Chittagong</option>
-                        <option value="sylhet">Sylhet</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Receiver Address
-                      </label>
-                      <input
-                        type="text"
-                        name="receiverAddress"
-                        placeholder="Address"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Receiver Contact No
-                      </label>
-                      <input
-                        type="text"
-                        name="receiverContact"
-                        placeholder="Sender Contact No"
-                        className="input input-bordered w-full"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Receiver Name
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Receiver Name"
+                      className="input input-bordered w-full"
+                      {...register("receiverName")}
+                    />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Receiver Region
+                      Receiver Email
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="Receiver Email"
+                      className="input input-bordered w-full"
+                      {...register("receiverEmail")}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Receiver Address
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Address"
+                      className="input input-bordered w-full"
+                      {...register("receiverAddress")}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Receiver Contact No
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Receiver Contact No"
+                      className="input input-bordered w-full"
+                      {...register("receiverContact")}
+                    />
+                  </div>
+
+                  {/* <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Receiver District
                     </label>
                     <select
-                      name="receiverRegion"
                       className="select select-bordered w-full"
+                      {...register("receiverDistrict")}
                     >
-                      <option value="">Select your region</option>
+                      <option value="">Select your District</option>
                       <option value="dhaka">Dhaka</option>
                       <option value="chittagong">Chittagong</option>
                       <option value="sylhet">Sylhet</option>
                       <option value="rajshahi">Rajshahi</option>
+                      <option value="khulna">Khulna</option>
+                      <option value="barisal">Barisal</option>
+                      <option value="rangpur">Rangpur</option>
+                      <option value="mymensingh">Mymensingh</option>
                     </select>
-                  </div>
+                  </div> */}
 
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Delivery Instruction
                     </label>
                     <textarea
-                      name="deliveryInstruction"
                       placeholder="Delivery Instruction"
                       rows="4"
                       className="textarea textarea-bordered w-full"
+                      {...register("deliveryInstruction")}
                     ></textarea>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
 
             {/* Footer Note */}
-            {/* <div className="mt-8 mb-6">
+            <div className="mt-8 mb-6">
               <p className="text-sm text-gray-600">
                 * PickUp Time 4pm-7pm Approx.
               </p>
-            </div> */}
+            </div>
 
             {/* Submit Button */}
             <button

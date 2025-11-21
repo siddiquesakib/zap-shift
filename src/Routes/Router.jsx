@@ -35,6 +35,7 @@ export const router = createBrowserRouter([
             <SendParcel />
           </PrivetRoutes>
         ),
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
       },
     ],
   },
