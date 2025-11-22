@@ -1,14 +1,17 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
+
+  const AxiosSecure = useAxiosSecure();
 
   const serviceCenters = useLoaderData();
   const regionsDuplicate = serviceCenters.map((c) => c.region);
