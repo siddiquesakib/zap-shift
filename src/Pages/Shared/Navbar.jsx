@@ -30,12 +30,15 @@ const Navbar = () => {
       <li>
         <NavLink to="/sendparcel">Send Parcel</NavLink>
       </li>
-      <li>
-        <NavLink to="/login">Login</NavLink>
-      </li>
-      <li>
-        <NavLink to="/register">Register</NavLink>
-      </li>
+      {user ? (
+        <>
+          <li>
+            <NavLink to="/dashboard/my-parcels">my-parcels</NavLink>
+          </li>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 
@@ -76,13 +79,17 @@ const Navbar = () => {
       </div>
       <div className="navbar-end">
         {user ? (
-          <Link className="btn" onClick={handleLogOut}>Log Out</Link>
+          <Link className="btn" onClick={handleLogOut}>
+            Log Out
+          </Link>
         ) : (
-          <Link className="btn" to={"/login"}>Log In</Link>
+          <Link className="btn" to={"/login"}>
+            Log In
+          </Link>
         )}
-         <Link className="btn btn-primary text-black mx-2" to={"/login"}> 
-         Be a Rider
-         </Link>
+        <Link className="btn btn-primary text-black mx-2" to={"/login"}>
+          Be a Rider
+        </Link>
       </div>
     </div>
   );
