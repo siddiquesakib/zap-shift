@@ -76,7 +76,7 @@ const DashboardLayout = () => {
               <NavLink
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="myParcels"
-                to={"/my-parcels"}
+                to={"/dashboard/my-parcels"}
               >
                 <TbTruckDelivery />
                 <span className="is-drawer-close:hidden">My Percels</span>
